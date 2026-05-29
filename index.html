@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="摊主联盟是一个给小吃、手作、鲜花、修理、二手、饮品等摊主分享出摊经验和经营心得的互动社区。"
+    />
+    <meta name="theme-color" content="#b92f2a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="摊主联盟 | 经验共享社区" />
+    <meta
+      property="og:description"
+      content="浏览摊主经验、筛选摊位类型、收藏心得，也可以发布自己的出摊复盘。"
+    />
+    <meta property="og:image" content="assets/hero-market.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>摊主联盟 | 经验共享社区</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="摊主联盟首页">
+        <span class="brand-mark">摊</span>
+        <span>摊主联盟</span>
+      </a>
+      <nav class="top-nav" aria-label="主要导航">
+        <a href="#stories">经验库</a>
+        <a href="#post">发布心得</a>
+        <a href="#ledger">联盟看板</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <img class="hero-image" src="assets/hero-market.png" alt="不同类型摊主在夜市交流经验" />
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="kicker">给认真摆摊的人一个互相照亮的地方</p>
+          <h1 id="hero-title">摊主联盟</h1>
+          <p class="hero-copy">
+            小吃、手作、花车、修理、二手、咖啡移动摊，在这里分享选址、备货、出摊节奏、客诉处理和一天赚到的真实经验。
+          </p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#post">发布心得</a>
+            <a class="secondary-action" href="#stories">浏览经验</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="control-band" aria-label="经验筛选">
+        <div class="control-grid">
+          <label class="search-box">
+            <span>搜索</span>
+            <input id="searchInput" type="search" placeholder="例如：雨天、备货、客诉、城管" autocomplete="off" />
+          </label>
+
+          <div class="filter-panel" aria-label="摊位类型筛选">
+            <button class="chip active" data-category="全部" type="button">全部</button>
+            <button class="chip" data-category="小吃" type="button">小吃</button>
+            <button class="chip" data-category="手作" type="button">手作</button>
+            <button class="chip" data-category="鲜花" type="button">鲜花</button>
+            <button class="chip" data-category="修理" type="button">修理</button>
+            <button class="chip" data-category="二手" type="button">二手</button>
+            <button class="chip" data-category="饮品" type="button">饮品</button>
+          </div>
+
+          <label class="sort-box">
+            <span>排序</span>
+            <select id="sortSelect">
+              <option value="hot">热度优先</option>
+              <option value="new">最新发布</option>
+              <option value="saves">收藏最多</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section id="stories" class="stories-section" aria-labelledby="stories-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">经验库</p>
+            <h2 id="stories-title">今天大家在聊什么</h2>
+          </div>
+          <p id="resultCount" class="result-count" aria-live="polite"></p>
+        </div>
+
+        <div id="storyGrid" class="story-grid"></div>
+      </section>
+
+      <section id="post" class="post-section" aria-labelledby="post-title">
+        <div class="post-copy">
+          <p class="kicker">发布心得</p>
+          <h2 id="post-title">把你的摊位经验留下来</h2>
+          <p>
+            适合记录今天踩过的坑、试出来的好办法、客人爱问的问题，或一条对新摊主有用的提醒。
+          </p>
+          <div class="prompt-stack">
+            <button class="prompt-button" type="button" data-prompt="今天最有效的揽客方式是什么？">揽客方式</button>
+            <button class="prompt-button" type="button" data-prompt="哪类货今天卖得最快，为什么？">爆品复盘</button>
+            <button class="prompt-button" type="button" data-prompt="新手第一次出摊最容易忽略什么？">新手提醒</button>
+          </div>
+        </div>
+
+        <form id="postForm" class="post-form">
+          <div class="form-row">
+            <label>
+              摊位类型
+              <select id="categoryInput" required>
+                <option value="小吃">小吃</option>
+                <option value="手作">手作</option>
+                <option value="鲜花">鲜花</option>
+                <option value="修理">修理</option>
+                <option value="二手">二手</option>
+                <option value="饮品">饮品</option>
+              </select>
+            </label>
+            <label>
+              摊主名
+              <input id="authorInput" type="text" maxlength="16" placeholder="例如：阿青" required />
+            </label>
+          </div>
+
+          <label>
+            标题
+            <input id="titleInput" type="text" maxlength="36" placeholder="一句话说清这条经验" required />
+          </label>
+
+          <label>
+            心得内容
+            <textarea id="bodyInput" rows="6" maxlength="260" placeholder="写下你的做法、场景、结果和提醒。" required></textarea>
+          </label>
+
+          <div class="form-row">
+            <label>
+              城市/街区
+              <input id="locationInput" type="text" maxlength="18" placeholder="例如：成都玉林" required />
+            </label>
+            <label>
+              关键词
+              <input id="tagsInput" type="text" maxlength="36" placeholder="用逗号分隔" />
+            </label>
+          </div>
+
+          <button class="submit-button" type="submit">＋ 发布到联盟</button>
+        </form>
+      </section>
+
+      <section id="ledger" class="ledger-section" aria-labelledby="ledger-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">联盟看板</p>
+            <h2 id="ledger-title">摆摊互助信号</h2>
+          </div>
+        </div>
+        <div class="ledger-grid">
+          <article>
+            <span id="totalPosts">0</span>
+            <p>条经验沉淀</p>
+          </article>
+          <article>
+            <span id="totalSaves">0</span>
+            <p>次被收藏</p>
+          </article>
+          <article>
+            <span id="activeCategory">全部</span>
+            <p>当前筛选</p>
+          </article>
+          <article>
+            <span id="topicOfDay">备货</span>
+            <p>高频话题</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="storyDialog" class="story-dialog">
+      <button id="closeDialog" class="icon-button" type="button" aria-label="关闭">×</button>
+      <div id="dialogContent"></div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+node_modules/
+.vercel/
+.netlify/
+dist/
+*.zip
+.DS_Store
+Thumbs.db

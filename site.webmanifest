@@ -1,0 +1,16 @@
+{
+  "name": "摊主联盟",
+  "short_name": "摊主联盟",
+  "description": "让各种类型的摊主分享经验和心得的互动网站。",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f8f3ea",
+  "theme_color": "#b92f2a",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
+}

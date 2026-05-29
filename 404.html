@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>页面走丢了 | 摊主联盟</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .not-found {
+        max-width: 620px;
+        text-align: center;
+      }
+
+      .not-found h1 {
+        margin: 0 0 14px;
+        font-size: clamp(42px, 8vw, 76px);
+        line-height: 1;
+      }
+
+      .not-found p {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.75;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="not-found">
+      <p class="kicker">404</p>
+      <h1>这个摊位暂时没开张</h1>
+      <p>你访问的页面不存在，回到摊主联盟继续浏览经验和心得。</p>
+      <a class="primary-action" href="./">回到首页</a>
+    </main>
+  </body>
+</html>

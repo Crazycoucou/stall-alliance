@@ -1,0 +1,16 @@
+{
+  "name": "stall-alliance",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An interactive static website for street stall owners to share practical experience.",
+  "scripts": {
+    "build": "node scripts/validate-static-site.js",
+    "start": "node scripts/local-server.js"
+  },
+  "keywords": [
+    "static-site",
+    "community",
+    "street-vendors"
+  ],
+  "license": "UNLICENSED"
+}
