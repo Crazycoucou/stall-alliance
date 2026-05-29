@@ -32,6 +32,8 @@ npm start
 - 经验筛选、搜索、排序
 - 经验详情弹窗
 - 收藏和发布心得，本地保存在浏览器 `localStorage`
+- 成本计算器：自动计算利润、利润率、回本周期和建议售价
+- 选址热力模拟：根据人流、客群、竞争、成本、合规等因素生成摆摊指数
 - SEO 描述、分享图、站点图标、Web App Manifest
 - 404 页面和 GitHub Pages `.nojekyll` 配置
 - GitHub Pages Actions 自动部署流程

@@ -92,6 +92,8 @@ const toast = document.querySelector("#toast");
 const storyDialog = document.querySelector("#storyDialog");
 const dialogContent = document.querySelector("#dialogContent");
 const closeDialog = document.querySelector("#closeDialog");
+const costForm = document.querySelector("#costForm");
+const locationForm = document.querySelector("#locationForm");
 
 let currentCategory = "全部";
 let stories = loadStories();
@@ -221,6 +223,160 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function readNumber(id, fallback = 0) {
+  const value = Number(document.querySelector(`#${id}`)?.value);
+  return Number.isFinite(value) ? value : fallback;
+}
+
+function formatMoney(value) {
+  return new Intl.NumberFormat("zh-CN", {
+    style: "currency",
+    currency: "CNY",
+    maximumFractionDigits: value >= 100 ? 0 : 1
+  }).format(value);
+}
+
+function calculateCosts() {
+  const materialCost = readNumber("materialCost");
+  const packageCost = readNumber("packageCost");
+  const stallFee = readNumber("stallFee");
+  const transportCost = readNumber("transportCost");
+  const laborCost = readNumber("laborCost");
+  const otherCost = readNumber("otherCost");
+  const dailyUnits = Math.max(1, readNumber("dailyUnits", 1));
+  const salePrice = readNumber("salePrice");
+  const setupCost = readNumber("setupCost");
+  const targetMargin = Math.min(80, Math.max(1, readNumber("targetMargin", 35))) / 100;
+
+  const unitVariableCost = materialCost + packageCost;
+  const dailyFixedCost = stallFee + transportCost + laborCost + otherCost;
+  const dailyRevenue = dailyUnits * salePrice;
+  const dailyCost = dailyUnits * unitVariableCost + dailyFixedCost;
+  const dailyProfit = dailyRevenue - dailyCost;
+  const margin = dailyRevenue > 0 ? dailyProfit / dailyRevenue : 0;
+  const paybackDays = dailyProfit > 0 ? Math.ceil(setupCost / dailyProfit) : null;
+  const suggestedPrice = (unitVariableCost + dailyFixedCost / dailyUnits) / (1 - targetMargin);
+
+  document.querySelector("#dailyRevenue").textContent = formatMoney(dailyRevenue);
+  document.querySelector("#dailyProfit").textContent = formatMoney(dailyProfit);
+  document.querySelector("#profitMargin").textContent = `${Math.round(margin * 100)}%`;
+  document.querySelector("#paybackDays").textContent = paybackDays ? `${paybackDays} 天` : "未回本";
+  document.querySelector("#suggestedPrice").textContent = formatMoney(suggestedPrice);
+
+  let advice = "当前模型按日销量摊薄固定成本，建议结合实际损耗和淡旺季再留 5%-10% 安全空间。";
+  if (dailyProfit <= 0) {
+    advice = "当前售价或销量无法覆盖每日成本。优先检查摊位费、人工安排和单份毛利，必要时缩小 SKU 或提高客单价。";
+  } else if (salePrice < suggestedPrice) {
+    advice = "当前平均售价低于目标利润率所需售价。可以通过套餐、加料、升级包装或提高核心单品价格来补齐利润。";
+  } else if (margin >= targetMargin) {
+    advice = "当前售价已经达到目标利润率。重点关注稳定销量、控制损耗和复购，而不是继续盲目降价。";
+  }
+
+  document.querySelector("#costAdvice").textContent = advice;
+}
+
+function calculateLocation() {
+  const traffic = readNumber("trafficScore", 3);
+  const match = readNumber("matchScore", 3);
+  const visibility = readNumber("visibilityScore", 3);
+  const dwell = readNumber("dwellScore", 3);
+  const competition = readNumber("competitionScore", 3);
+  const rent = readNumber("rentScore", 3);
+  const policy = readNumber("policyScore", 3);
+  const shelter = readNumber("shelterScore", 3);
+  const stallType = document.querySelector("#stallType").value;
+  const timeSlot = document.querySelector("#timeSlot").value;
+
+  const typeBonus = {
+    food: { evening: 7, lunch: 5, morning: 3, weekend: 4 },
+    craft: { weekend: 7, evening: 4, lunch: 1, morning: -2 },
+    flower: { evening: 5, weekend: 5, morning: 2, lunch: 1 },
+    repair: { morning: 5, lunch: 4, weekend: 2, evening: 0 },
+    secondhand: { weekend: 8, evening: 3, lunch: 0, morning: -2 }
+  };
+
+  const normalized =
+    traffic * 4.6 +
+    match * 4.1 +
+    visibility * 2.8 +
+    dwell * 2.6 +
+    shelter * 1.4 +
+    (6 - competition) * 2.1 +
+    (6 - rent) * 1.8 +
+    (6 - policy) * 1.6;
+
+  const index = Math.max(0, Math.min(100, Math.round(normalized + (typeBonus[stallType]?.[timeSlot] || 0))));
+  const level = index >= 82 ? "强烈推荐" : index >= 68 ? "值得试摊" : index >= 52 ? "谨慎观察" : "暂不推荐";
+
+  const risks = [];
+  if (competition >= 4) risks.push("竞争密度偏高");
+  if (rent >= 4) risks.push("固定成本偏高");
+  if (policy >= 4) risks.push("合规风险偏高");
+  if (traffic <= 2) risks.push("自然人流不足");
+  if (match <= 2) risks.push("客群匹配偏弱");
+
+  const advice =
+    risks.length > 0
+      ? `${level}。主要风险是${risks.join("、")}，建议先用 2-3 次低库存试摊验证转化率。`
+      : `${level}。这个点位的基础条件较均衡，建议记录每小时成交数和客单价，连续三次复盘后再决定长期占位。`;
+
+  document.querySelector("#locationIndex").textContent = index;
+  document.querySelector("#locationLevel").textContent = level;
+  document.querySelector("#locationAdvice").textContent = advice;
+  document.querySelector(".score-ring").style.setProperty("--score-angle", `${index * 3.6}deg`);
+
+  updateSliderLabels();
+  renderHeatMap(index, { traffic, match, dwell, competition, rent, policy, shelter });
+}
+
+function updateSliderLabels() {
+  const labels = [
+    ["trafficScore", "trafficValue"],
+    ["matchScore", "matchValue"],
+    ["visibilityScore", "visibilityValue"],
+    ["dwellScore", "dwellValue"],
+    ["competitionScore", "competitionValue"],
+    ["rentScore", "rentValue"],
+    ["policyScore", "policyValue"],
+    ["shelterScore", "shelterValue"]
+  ];
+
+  labels.forEach(([inputId, outputId]) => {
+    document.querySelector(`#${outputId}`).textContent = document.querySelector(`#${inputId}`).value;
+  });
+}
+
+function renderHeatMap(baseIndex, factors) {
+  const cells = [
+    ["入口外侧", 7 + factors.visibility],
+    ["主通道中段", 5 + factors.traffic],
+    ["转角位", 3 + factors.visibility + factors.dwell],
+    ["排队旁", 6 + factors.dwell],
+    ["地铁口", 4 + factors.traffic - factors.policy],
+    ["学校边", 2 + factors.match - factors.policy],
+    ["写字楼下", 3 + factors.match - factors.rent],
+    ["社区门口", 2 + factors.dwell],
+    ["夜市核心", 6 + factors.traffic - factors.competition],
+    ["停车边", -1 + factors.shelter],
+    ["竞品旁", -3 - factors.competition + factors.traffic],
+    ["背街位", -8 + factors.rent]
+  ];
+
+  document.querySelector("#heatMap").innerHTML = cells
+    .map(([label, delta]) => {
+      const score = Math.max(18, Math.min(98, Math.round(baseIndex + delta)));
+      const hue = Math.round(8 + score * 1.15);
+      const color = `hsl(${hue}, 58%, ${score > 72 ? 34 : 42}%)`;
+      return `
+        <div class="heat-cell" style="background:${color}">
+          <strong>${label}</strong>
+          <span>${score}</span>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 chips.forEach((chip) => {
   chip.addEventListener("click", () => {
     currentCategory = chip.dataset.category;
@@ -280,5 +436,10 @@ postForm.addEventListener("submit", (event) => {
 searchInput.addEventListener("input", renderStories);
 sortSelect.addEventListener("change", renderStories);
 closeDialog.addEventListener("click", () => storyDialog.close());
+costForm.addEventListener("input", calculateCosts);
+locationForm.addEventListener("input", calculateLocation);
+locationForm.addEventListener("change", calculateLocation);
 
 renderStories();
+calculateCosts();
+calculateLocation();

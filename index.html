@@ -29,6 +29,7 @@
       </a>
       <nav class="top-nav" aria-label="主要导航">
         <a href="#stories">经验库</a>
+        <a href="#tools">经营工具</a>
         <a href="#post">发布心得</a>
         <a href="#ledger">联盟看板</a>
       </nav>
@@ -47,6 +48,7 @@
           <div class="hero-actions">
             <a class="primary-action" href="#post">发布心得</a>
             <a class="secondary-action" href="#stories">浏览经验</a>
+            <a class="secondary-action" href="#tools">试算工具</a>
           </div>
         </div>
       </section>
@@ -89,6 +91,191 @@
         </div>
 
         <div id="storyGrid" class="story-grid"></div>
+      </section>
+
+      <section id="tools" class="tools-section" aria-labelledby="tools-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">经营工具</p>
+            <h2 id="tools-title">出摊前先算一遍</h2>
+          </div>
+          <p class="result-count">输入你的真实预估，系统会自动给出利润、回本和选址指数。</p>
+        </div>
+
+        <div class="tool-grid">
+          <article class="tool-card" aria-labelledby="cost-title">
+            <div class="tool-card-heading">
+              <div>
+                <p class="kicker">成本计算器</p>
+                <h3 id="cost-title">利润、回本周期与建议售价</h3>
+              </div>
+              <span class="tool-badge">自动试算</span>
+            </div>
+
+            <form id="costForm" class="calculator-form">
+              <div class="form-row">
+                <label>
+                  单份原材料成本
+                  <input id="materialCost" type="number" min="0" step="0.1" value="6" />
+                </label>
+                <label>
+                  单份包装/耗材
+                  <input id="packageCost" type="number" min="0" step="0.1" value="1.5" />
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  每日摊位费
+                  <input id="stallFee" type="number" min="0" step="1" value="80" />
+                </label>
+                <label>
+                  每日交通/物流
+                  <input id="transportCost" type="number" min="0" step="1" value="30" />
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  每日人工/帮手
+                  <input id="laborCost" type="number" min="0" step="1" value="120" />
+                </label>
+                <label>
+                  其他每日成本
+                  <input id="otherCost" type="number" min="0" step="1" value="20" />
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  预计日销量
+                  <input id="dailyUnits" type="number" min="1" step="1" value="80" />
+                </label>
+                <label>
+                  当前平均售价
+                  <input id="salePrice" type="number" min="0" step="0.1" value="15" />
+                </label>
+              </div>
+
+              <div class="form-row">
+                <label>
+                  前期投入
+                  <input id="setupCost" type="number" min="0" step="10" value="3000" />
+                </label>
+                <label>
+                  目标利润率
+                  <input id="targetMargin" type="number" min="1" max="80" step="1" value="35" />
+                </label>
+              </div>
+            </form>
+
+            <div class="metric-grid" aria-live="polite">
+              <article>
+                <span id="dailyRevenue">¥0</span>
+                <p>预计日销售额</p>
+              </article>
+              <article>
+                <span id="dailyProfit">¥0</span>
+                <p>预计日利润</p>
+              </article>
+              <article>
+                <span id="profitMargin">0%</span>
+                <p>当前利润率</p>
+              </article>
+              <article>
+                <span id="paybackDays">--</span>
+                <p>预计回本周期</p>
+              </article>
+            </div>
+
+            <div class="insight-panel">
+              <strong>建议售价：<span id="suggestedPrice">¥0</span></strong>
+              <p id="costAdvice"></p>
+            </div>
+          </article>
+
+          <article class="tool-card" aria-labelledby="location-title">
+            <div class="tool-card-heading">
+              <div>
+                <p class="kicker">选址热力模拟</p>
+                <h3 id="location-title">推荐摆摊指数</h3>
+              </div>
+              <span class="tool-badge">指数模型</span>
+            </div>
+
+            <form id="locationForm" class="calculator-form">
+              <div class="form-row">
+                <label>
+                  摊位类型
+                  <select id="stallType">
+                    <option value="food">小吃/饮品</option>
+                    <option value="craft">手作/饰品</option>
+                    <option value="flower">鲜花/礼品</option>
+                    <option value="repair">修理/便民</option>
+                    <option value="secondhand">二手/旧物</option>
+                  </select>
+                </label>
+                <label>
+                  时段
+                  <select id="timeSlot">
+                    <option value="evening">晚高峰/夜市</option>
+                    <option value="morning">早高峰</option>
+                    <option value="lunch">午市</option>
+                    <option value="weekend">周末全天</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="slider-list">
+                <label>
+                  人流量 <span id="trafficValue">4</span>
+                  <input id="trafficScore" type="range" min="1" max="5" value="4" />
+                </label>
+                <label>
+                  客群匹配 <span id="matchValue">4</span>
+                  <input id="matchScore" type="range" min="1" max="5" value="4" />
+                </label>
+                <label>
+                  可见度 <span id="visibilityValue">3</span>
+                  <input id="visibilityScore" type="range" min="1" max="5" value="3" />
+                </label>
+                <label>
+                  停留意愿 <span id="dwellValue">3</span>
+                  <input id="dwellScore" type="range" min="1" max="5" value="3" />
+                </label>
+                <label>
+                  竞争压力 <span id="competitionValue">3</span>
+                  <input id="competitionScore" type="range" min="1" max="5" value="3" />
+                </label>
+                <label>
+                  成本压力 <span id="rentValue">2</span>
+                  <input id="rentScore" type="range" min="1" max="5" value="2" />
+                </label>
+                <label>
+                  管理/合规风险 <span id="policyValue">2</span>
+                  <input id="policyScore" type="range" min="1" max="5" value="2" />
+                </label>
+                <label>
+                  天气遮蔽 <span id="shelterValue">3</span>
+                  <input id="shelterScore" type="range" min="1" max="5" value="3" />
+                </label>
+              </div>
+            </form>
+
+            <div class="heat-summary" aria-live="polite">
+              <div class="score-ring">
+                <span id="locationIndex">0</span>
+                <p>摆摊指数</p>
+              </div>
+              <div>
+                <strong id="locationLevel">待评估</strong>
+                <p id="locationAdvice"></p>
+              </div>
+            </div>
+
+            <div id="heatMap" class="heat-map" aria-label="选址热力模拟网格"></div>
+          </article>
+        </div>
       </section>
 
       <section id="post" class="post-section" aria-labelledby="post-title">
