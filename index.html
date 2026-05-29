@@ -5,372 +5,330 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="摊主联盟是一个给小吃、手作、鲜花、修理、二手、饮品等摊主分享出摊经验和经营心得的互动社区。"
+      content="摊主联盟是一个摊主基础设施平台，提供摆摊经验、利润计算、摊位情报、经营日志和 AI 工具入口。"
     />
-    <meta name="theme-color" content="#b92f2a" />
+    <meta name="theme-color" content="#0c111d" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="摊主联盟 | 经验共享社区" />
+    <meta property="og:title" content="摊主联盟 Stall Alliance" />
     <meta
       property="og:description"
-      content="浏览摊主经验、筛选摊位类型、收藏心得，也可以发布自己的出摊复盘。"
+      content="让每个摊位的经验都能被看见。摆摊经验、利润计算、摊位情报、AI 工具和真实经营日志。"
     />
     <meta property="og:image" content="assets/hero-market.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>摊主联盟 | 经验共享社区</title>
+    <title>摊主联盟 Stall Alliance | 摊主基础设施平台</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="site.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="site-header">
+    <header class="app-header">
       <a class="brand" href="#top" aria-label="摊主联盟首页">
-        <span class="brand-mark">摊</span>
-        <span>摊主联盟</span>
+        <span class="brand-mark">SA</span>
+        <span>
+          摊主联盟
+          <small>Stall Alliance</small>
+        </span>
       </a>
       <nav class="top-nav" aria-label="主要导航">
-        <a href="#stories">经验库</a>
-        <a href="#tools">经营工具</a>
-        <a href="#post">发布心得</a>
-        <a href="#ledger">联盟看板</a>
+        <a href="#feed">经验流</a>
+        <a href="#calculator">利润</a>
+        <a href="#map">地图</a>
+        <a href="#logs">日志</a>
+        <a href="#publish">发布</a>
       </nav>
     </header>
 
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
+      <section class="hero">
         <img class="hero-image" src="assets/hero-market.png" alt="不同类型摊主在夜市交流经验" />
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <p class="kicker">给认真摆摊的人一个互相照亮的地方</p>
-          <h1 id="hero-title">摊主联盟</h1>
-          <p class="hero-copy">
-            小吃、手作、花车、修理、二手、咖啡移动摊，在这里分享选址、备货、出摊节奏、客诉处理和一天赚到的真实经验。
-          </p>
-          <div class="hero-actions">
-            <a class="primary-action" href="#post">发布心得</a>
-            <a class="secondary-action" href="#stories">浏览经验</a>
-            <a class="secondary-action" href="#tools">试算工具</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="control-band" aria-label="经验筛选">
-        <div class="control-grid">
-          <label class="search-box">
-            <span>搜索</span>
-            <input id="searchInput" type="search" placeholder="例如：雨天、备货、客诉、城管" autocomplete="off" />
-          </label>
-
-          <div class="filter-panel" aria-label="摊位类型筛选">
-            <button class="chip active" data-category="全部" type="button">全部</button>
-            <button class="chip" data-category="小吃" type="button">小吃</button>
-            <button class="chip" data-category="手作" type="button">手作</button>
-            <button class="chip" data-category="鲜花" type="button">鲜花</button>
-            <button class="chip" data-category="修理" type="button">修理</button>
-            <button class="chip" data-category="二手" type="button">二手</button>
-            <button class="chip" data-category="饮品" type="button">饮品</button>
+        <div class="hero-shade"></div>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">摊主基础设施平台 · AI创业实验室</p>
+            <h1>让每个摊位的经验都能被看见</h1>
+            <p>
+              记录真实出摊数据，计算利润与回本，沉淀摊位情报，把副业创业从“凭感觉”变成“可复盘”。
+            </p>
+            <div class="hero-actions">
+              <a class="primary-action" href="#feed">查看摆摊经验</a>
+              <a class="secondary-action" href="#publish">发布今日摆摊</a>
+            </div>
           </div>
 
-          <label class="sort-box">
-            <span>排序</span>
-            <select id="sortSelect">
-              <option value="hot">热度优先</option>
-              <option value="new">最新发布</option>
-              <option value="saves">收藏最多</option>
-            </select>
-          </label>
-        </div>
-      </section>
-
-      <section id="stories" class="stories-section" aria-labelledby="stories-title">
-        <div class="section-heading">
-          <div>
-            <p class="kicker">经验库</p>
-            <h2 id="stories-title">今天大家在聊什么</h2>
-          </div>
-          <p id="resultCount" class="result-count" aria-live="polite"></p>
-        </div>
-
-        <div id="storyGrid" class="story-grid"></div>
-      </section>
-
-      <section id="tools" class="tools-section" aria-labelledby="tools-title">
-        <div class="section-heading">
-          <div>
-            <p class="kicker">经营工具</p>
-            <h2 id="tools-title">出摊前先算一遍</h2>
-          </div>
-          <p class="result-count">输入你的真实预估，系统会自动给出利润、回本和选址指数。</p>
-        </div>
-
-        <div class="tool-grid">
-          <article class="tool-card" aria-labelledby="cost-title">
-            <div class="tool-card-heading">
-              <div>
-                <p class="kicker">成本计算器</p>
-                <h3 id="cost-title">利润、回本周期与建议售价</h3>
-              </div>
-              <span class="tool-badge">自动试算</span>
+          <aside class="live-panel" aria-label="今日摆摊数据">
+            <div class="panel-head">
+              <span>今日经营雷达</span>
+              <strong id="liveClock">实时</strong>
             </div>
-
-            <form id="costForm" class="calculator-form">
-              <div class="form-row">
-                <label>
-                  单份原材料成本
-                  <input id="materialCost" type="number" min="0" step="0.1" value="6" />
-                </label>
-                <label>
-                  单份包装/耗材
-                  <input id="packageCost" type="number" min="0" step="0.1" value="1.5" />
-                </label>
-              </div>
-
-              <div class="form-row">
-                <label>
-                  每日摊位费
-                  <input id="stallFee" type="number" min="0" step="1" value="80" />
-                </label>
-                <label>
-                  每日交通/物流
-                  <input id="transportCost" type="number" min="0" step="1" value="30" />
-                </label>
-              </div>
-
-              <div class="form-row">
-                <label>
-                  每日人工/帮手
-                  <input id="laborCost" type="number" min="0" step="1" value="120" />
-                </label>
-                <label>
-                  其他每日成本
-                  <input id="otherCost" type="number" min="0" step="1" value="20" />
-                </label>
-              </div>
-
-              <div class="form-row">
-                <label>
-                  预计日销量
-                  <input id="dailyUnits" type="number" min="1" step="1" value="80" />
-                </label>
-                <label>
-                  当前平均售价
-                  <input id="salePrice" type="number" min="0" step="0.1" value="15" />
-                </label>
-              </div>
-
-              <div class="form-row">
-                <label>
-                  前期投入
-                  <input id="setupCost" type="number" min="0" step="10" value="3000" />
-                </label>
-                <label>
-                  目标利润率
-                  <input id="targetMargin" type="number" min="1" max="80" step="1" value="35" />
-                </label>
-              </div>
-            </form>
-
-            <div class="metric-grid" aria-live="polite">
+            <div class="live-grid">
               <article>
-                <span id="dailyRevenue">¥0</span>
-                <p>预计日销售额</p>
+                <span id="todayPosts">24</span>
+                <p>今日新增经验</p>
               </article>
               <article>
-                <span id="dailyProfit">¥0</span>
-                <p>预计日利润</p>
+                <span id="topCity">杭州</span>
+                <p>热门城市</p>
               </article>
               <article>
-                <span id="profitMargin">0%</span>
-                <p>当前利润率</p>
+                <span id="topCategory">柠檬茶</span>
+                <p>热门品类</p>
               </article>
               <article>
-                <span id="paybackDays">--</span>
-                <p>预计回本周期</p>
-              </article>
-            </div>
-
-            <div class="insight-panel">
-              <strong>建议售价：<span id="suggestedPrice">¥0</span></strong>
-              <p id="costAdvice"></p>
-            </div>
-          </article>
-
-          <article class="tool-card" aria-labelledby="location-title">
-            <div class="tool-card-heading">
-              <div>
-                <p class="kicker">选址热力模拟</p>
-                <h3 id="location-title">推荐摆摊指数</h3>
-              </div>
-              <span class="tool-badge">指数模型</span>
-            </div>
-
-            <form id="locationForm" class="calculator-form">
-              <div class="form-row">
-                <label>
-                  摊位类型
-                  <select id="stallType">
-                    <option value="food">小吃/饮品</option>
-                    <option value="craft">手作/饰品</option>
-                    <option value="flower">鲜花/礼品</option>
-                    <option value="repair">修理/便民</option>
-                    <option value="secondhand">二手/旧物</option>
-                  </select>
-                </label>
-                <label>
-                  时段
-                  <select id="timeSlot">
-                    <option value="evening">晚高峰/夜市</option>
-                    <option value="morning">早高峰</option>
-                    <option value="lunch">午市</option>
-                    <option value="weekend">周末全天</option>
-                  </select>
-                </label>
-              </div>
-
-              <div class="slider-list">
-                <label>
-                  人流量 <span id="trafficValue">4</span>
-                  <input id="trafficScore" type="range" min="1" max="5" value="4" />
-                </label>
-                <label>
-                  客群匹配 <span id="matchValue">4</span>
-                  <input id="matchScore" type="range" min="1" max="5" value="4" />
-                </label>
-                <label>
-                  可见度 <span id="visibilityValue">3</span>
-                  <input id="visibilityScore" type="range" min="1" max="5" value="3" />
-                </label>
-                <label>
-                  停留意愿 <span id="dwellValue">3</span>
-                  <input id="dwellScore" type="range" min="1" max="5" value="3" />
-                </label>
-                <label>
-                  竞争压力 <span id="competitionValue">3</span>
-                  <input id="competitionScore" type="range" min="1" max="5" value="3" />
-                </label>
-                <label>
-                  成本压力 <span id="rentValue">2</span>
-                  <input id="rentScore" type="range" min="1" max="5" value="2" />
-                </label>
-                <label>
-                  管理/合规风险 <span id="policyValue">2</span>
-                  <input id="policyScore" type="range" min="1" max="5" value="2" />
-                </label>
-                <label>
-                  天气遮蔽 <span id="shelterValue">3</span>
-                  <input id="shelterScore" type="range" min="1" max="5" value="3" />
-                </label>
-              </div>
-            </form>
-
-            <div class="heat-summary" aria-live="polite">
-              <div class="score-ring">
-                <span id="locationIndex">0</span>
+                <span id="cityIndex">82</span>
                 <p>摆摊指数</p>
-              </div>
-              <div>
-                <strong id="locationLevel">待评估</strong>
-                <p id="locationAdvice"></p>
-              </div>
+              </article>
             </div>
-
-            <div id="heatMap" class="heat-map" aria-label="选址热力模拟网格"></div>
-          </article>
+            <div class="weather-strip">
+              <span>天气提示</span>
+              <strong id="weatherHint">夜间湿度偏高，饮品摊备足冰块，饰品摊准备防潮盒。</strong>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section id="post" class="post-section" aria-labelledby="post-title">
-        <div class="post-copy">
-          <p class="kicker">发布心得</p>
-          <h2 id="post-title">把你的摊位经验留下来</h2>
-          <p>
-            适合记录今天踩过的坑、试出来的好办法、客人爱问的问题，或一条对新摊主有用的提醒。
-          </p>
-          <div class="prompt-stack">
-            <button class="prompt-button" type="button" data-prompt="今天最有效的揽客方式是什么？">揽客方式</button>
-            <button class="prompt-button" type="button" data-prompt="哪类货今天卖得最快，为什么？">爆品复盘</button>
-            <button class="prompt-button" type="button" data-prompt="新手第一次出摊最容易忽略什么？">新手提醒</button>
-          </div>
+      <section class="today-section" aria-label="今日摆摊数据模块">
+        <div class="data-card">
+          <span>在线摊主</span>
+          <strong id="onlineVendors">1,284</strong>
+          <p>过去 30 分钟活跃</p>
         </div>
-
-        <form id="postForm" class="post-form">
-          <div class="form-row">
-            <label>
-              摊位类型
-              <select id="categoryInput" required>
-                <option value="小吃">小吃</option>
-                <option value="手作">手作</option>
-                <option value="鲜花">鲜花</option>
-                <option value="修理">修理</option>
-                <option value="二手">二手</option>
-                <option value="饮品">饮品</option>
-              </select>
-            </label>
-            <label>
-              摊主名
-              <input id="authorInput" type="text" maxlength="16" placeholder="例如：阿青" required />
-            </label>
-          </div>
-
-          <label>
-            标题
-            <input id="titleInput" type="text" maxlength="36" placeholder="一句话说清这条经验" required />
-          </label>
-
-          <label>
-            心得内容
-            <textarea id="bodyInput" rows="6" maxlength="260" placeholder="写下你的做法、场景、结果和提醒。" required></textarea>
-          </label>
-
-          <div class="form-row">
-            <label>
-              城市/街区
-              <input id="locationInput" type="text" maxlength="18" placeholder="例如：成都玉林" required />
-            </label>
-            <label>
-              关键词
-              <input id="tagsInput" type="text" maxlength="36" placeholder="用逗号分隔" />
-            </label>
-          </div>
-
-          <button class="submit-button" type="submit">＋ 发布到联盟</button>
-        </form>
+        <div class="data-card">
+          <span>今日上传</span>
+          <strong>87</strong>
+          <p>经验、日志、点位情报</p>
+        </div>
+        <div class="data-card">
+          <span>平均日利润</span>
+          <strong>¥436</strong>
+          <p>来自 41 条公开日志</p>
+        </div>
+        <div class="data-card">
+          <span>风险提醒</span>
+          <strong>城管巡查</strong>
+          <p>3 个城市晚高峰偏严</p>
+        </div>
       </section>
 
-      <section id="ledger" class="ledger-section" aria-labelledby="ledger-title">
+      <section id="feed" class="section-shell">
         <div class="section-heading">
           <div>
-            <p class="kicker">联盟看板</p>
-            <h2 id="ledger-title">摆摊互助信号</h2>
+            <p class="eyebrow">摆摊经验信息流</p>
+            <h2>今天大家真实赚了多少，又踩了什么坑</h2>
+          </div>
+          <div class="feed-controls">
+            <input id="feedSearch" type="search" placeholder="搜索城市、品类、问题" autocomplete="off" />
+            <select id="feedFilter" aria-label="筛选经验类型">
+              <option value="全部">全部</option>
+              <option value="柠檬茶">柠檬茶</option>
+              <option value="咖啡">咖啡</option>
+              <option value="烤肠">烤肠</option>
+              <option value="文创">文创</option>
+              <option value="饰品">饰品</option>
+              <option value="夜市">夜市</option>
+              <option value="校园">校园</option>
+              <option value="市集">市集</option>
+            </select>
           </div>
         </div>
-        <div class="ledger-grid">
+        <div id="feedGrid" class="feed-grid"></div>
+      </section>
+
+      <section class="category-section section-shell" aria-label="热门分类">
+        <div class="section-heading compact">
+          <div>
+            <p class="eyebrow">热门分类</p>
+            <h2>从一个小入口开始复盘</h2>
+          </div>
+        </div>
+        <div id="categoryGrid" class="category-grid"></div>
+      </section>
+
+      <section id="calculator" class="section-shell two-column">
+        <div class="tool-copy">
+          <p class="eyebrow">AI利润计算器</p>
+          <h2>先算清楚，再决定今天卖不卖</h2>
+          <p>
+            输入售价、成本、摊位费和日销量，自动生成日利润、月利润、回本周期、利润率和成本结构图。
+          </p>
+          <div class="mini-note">
+            <strong>计算逻辑</strong>
+            <span>按 30 天经营月估算，固定成本按日摊薄。结果适合出摊前快速判断，不替代真实账本。</span>
+          </div>
+        </div>
+
+        <article class="product-card calculator-card">
+          <form id="profitForm" class="dense-form">
+            <label>
+              产品售价
+              <input id="priceInput" type="number" min="0" step="0.1" value="15" />
+            </label>
+            <label>
+              原料成本
+              <input id="rawCostInput" type="number" min="0" step="0.1" value="5.5" />
+            </label>
+            <label>
+              冰块成本
+              <input id="iceCostInput" type="number" min="0" step="0.1" value="0.8" />
+            </label>
+            <label>
+              杯子成本
+              <input id="cupCostInput" type="number" min="0" step="0.1" value="1.2" />
+            </label>
+            <label>
+              每日房租/摊位费
+              <input id="rentInput" type="number" min="0" step="1" value="80" />
+            </label>
+            <label>
+              日销量
+              <input id="unitsInput" type="number" min="1" step="1" value="90" />
+            </label>
+            <label>
+              前期投入
+              <input id="investmentInput" type="number" min="0" step="10" value="3000" />
+            </label>
+          </form>
+
+          <div class="profit-metrics" aria-live="polite">
+            <article>
+              <span id="dailyProfitValue">¥0</span>
+              <p>日利润</p>
+            </article>
+            <article>
+              <span id="monthlyProfitValue">¥0</span>
+              <p>月利润</p>
+            </article>
+            <article>
+              <span id="paybackValue">--</span>
+              <p>回本周期</p>
+            </article>
+            <article>
+              <span id="marginValue">0%</span>
+              <p>利润率</p>
+            </article>
+          </div>
+
+          <div class="bar-chart" aria-label="成本结构可视化">
+            <div>
+              <span>原料</span>
+              <i id="rawBar"></i>
+            </div>
+            <div>
+              <span>冰块</span>
+              <i id="iceBar"></i>
+            </div>
+            <div>
+              <span>杯子</span>
+              <i id="cupBar"></i>
+            </div>
+            <div>
+              <span>摊位费</span>
+              <i id="rentBar"></i>
+            </div>
+          </div>
+          <p id="profitAdvice" class="advice-text"></p>
+        </article>
+      </section>
+
+      <section id="map" class="section-shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">摆摊地图</p>
+            <h2>先用点位情报判断能不能试摊</h2>
+          </div>
+          <p class="muted-copy">静态假数据原型，用来展示未来可扩展的摊位情报系统。</p>
+        </div>
+        <div id="mapGrid" class="map-grid"></div>
+      </section>
+
+      <section id="ai-tools" class="section-shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">AI工具入口</p>
+            <h2>把重复劳动交给工具，把时间留给出摊</h2>
+          </div>
+        </div>
+        <div class="ai-grid">
           <article>
-            <span id="totalPosts">0</span>
-            <p>条经验沉淀</p>
+            <span>AI利润计算器</span>
+            <p>根据成本和销量估算利润、售价和回本周期。</p>
           </article>
           <article>
-            <span id="totalSaves">0</span>
-            <p>次被收藏</p>
+            <span>AI菜单生成</span>
+            <p>按品类、成本和客群生成可售菜单组合。</p>
           </article>
           <article>
-            <span id="activeCategory">全部</span>
-            <p>当前筛选</p>
+            <span>AI海报生成</span>
+            <p>为今日主推单品生成手机海报文案结构。</p>
           </article>
           <article>
-            <span id="topicOfDay">备货</span>
-            <p>高频话题</p>
+            <span>AI文案生成</span>
+            <p>生成小红书、朋友圈、摊位牌和团购文案。</p>
+          </article>
+          <article>
+            <span>AI选址助手</span>
+            <p>结合人流、客群、竞争和风险给出试摊建议。</p>
           </article>
         </div>
+      </section>
+
+      <section id="logs" class="section-shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">今日摆摊日志</p>
+            <h2>真实经营记录比鸡血更有用</h2>
+          </div>
+        </div>
+        <div id="logList" class="log-list"></div>
+      </section>
+
+      <section id="publish" class="section-shell publish-section">
+        <div class="publish-copy">
+          <p class="eyebrow">发布经验</p>
+          <h2>把今天的出摊复盘存下来</h2>
+          <p>
+            先做前端交互原型：内容会保存在当前浏览器本地，刷新后仍可看到。未来可以接数据库、账号和图片存储。
+          </p>
+        </div>
+
+        <form id="publishForm" class="product-card publish-form">
+          <div class="dense-form">
+            <label>
+              城市
+              <input id="postCity" type="text" maxlength="16" value="杭州" required />
+            </label>
+            <label>
+              摊主类型
+              <input id="postType" type="text" maxlength="18" value="柠檬茶摊主" required />
+            </label>
+            <label>
+              今日利润
+              <input id="postProfit" type="number" step="1" value="487" required />
+            </label>
+            <label>
+              今日销量
+              <input id="postUnits" type="number" step="1" value="126" required />
+            </label>
+          </div>
+          <label>
+            经验总结
+            <textarea id="postSummary" rows="4" maxlength="180" required>最大的教训：冰块备少了，晚高峰断货 20 分钟。</textarea>
+          </label>
+          <label>
+            标签
+            <input id="postTags" type="text" maxlength="48" value="柠檬茶,夜市,备货" />
+          </label>
+          <label>
+            上传图片
+            <input id="postImage" type="file" accept="image/*" />
+          </label>
+          <div id="imagePreview" class="image-preview" aria-live="polite"></div>
+          <button class="primary-action" type="submit">发布到经验流</button>
+        </form>
       </section>
     </main>
 
-    <dialog id="storyDialog" class="story-dialog">
-      <button id="closeDialog" class="icon-button" type="button" aria-label="关闭">×</button>
-      <div id="dialogContent"></div>
-    </dialog>
-
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
     <script src="script.js"></script>
   </body>
 </html>

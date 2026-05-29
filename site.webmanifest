@@ -1,11 +1,11 @@
 {
   "name": "摊主联盟",
   "short_name": "摊主联盟",
-  "description": "让各种类型的摊主分享经验和心得的互动网站。",
+  "description": "摊主基础设施平台：经验信息流、利润计算、摊位情报、经营日志和 AI 工具入口。",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f8f3ea",
-  "theme_color": "#b92f2a",
+  "theme_color": "#0c111d",
   "icons": [
     {
       "src": "assets/favicon.svg",

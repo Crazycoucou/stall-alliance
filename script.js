@@ -1,226 +1,337 @@
-const seedStories = [
+const feedStorageKey = "stallAllianceProductFeed";
+
+const baseFeed = [
   {
     id: "seed-1",
-    category: "小吃",
-    author: "老陈",
-    location: "广州海珠",
-    title: "炸串摊雨天别急着收，换三样东西还能稳住客流",
-    body:
-      "雨天人少，但热汤、纸巾和可站着吃的套餐会变重要。我把单串改成小份拼盘，再加一杯热豆浆，客单价反而更稳。",
-    tags: ["雨天", "套餐", "客单价"],
-    saves: 42,
-    heat: 96,
-    createdAt: "2026-05-20T19:30:00"
+    city: "杭州",
+    type: "柠檬茶摊主",
+    category: "柠檬茶",
+    profit: 487,
+    units: 126,
+    summary: "最大的教训：冰块备少了，晚高峰断货 20 分钟。下次冰块按天气预报温度加 30% 安全量。",
+    tags: ["柠檬茶", "夜市", "备货"],
+    likes: 128,
+    comments: 24
   },
   {
     id: "seed-2",
-    category: "手作",
-    author: "米粒",
-    location: "杭州湖滨",
-    title: "手作摊不要只摆成品，半成品反而更能留人",
-    body:
-      "我把香薰蜡烛的色块、模具和试香纸摆出来，客人会主动问过程。讲清制作时间和保养方法，比单纯喊价更容易成交。",
-    tags: ["陈列", "沟通", "手作"],
-    saves: 35,
-    heat: 88,
-    createdAt: "2026-05-22T14:20:00"
+    city: "成都",
+    type: "烤肠摊主",
+    category: "烤肠",
+    profit: 356,
+    units: 214,
+    summary: "学校门口 17:20 后转化最高，低价单品负责排队，高毛利芝士款负责利润。",
+    tags: ["校园", "烤肠", "套餐"],
+    likes: 94,
+    comments: 18
   },
   {
     id: "seed-3",
-    category: "鲜花",
-    author: "枝枝",
-    location: "上海武康路",
-    title: "花车晚高峰只推三种价位，选择越少越好卖",
-    body:
-      "下班路过的人决策时间很短。我准备了 19、39、59 三档小花束，每档固定包装，现场只做微调，损耗和排队都少了。",
-    tags: ["定价", "损耗", "晚高峰"],
-    saves: 51,
-    heat: 99,
-    createdAt: "2026-05-24T18:10:00"
+    city: "上海",
+    type: "文创市集摊主",
+    category: "文创",
+    profit: 612,
+    units: 43,
+    summary: "客人不缺贴纸，缺的是送礼理由。把产品按生日、毕业、通勤分类后，成交明显更快。",
+    tags: ["文创", "市集", "陈列"],
+    likes: 176,
+    comments: 31
   },
   {
     id: "seed-4",
-    category: "修理",
-    author: "强叔",
-    location: "武汉江汉",
-    title: "修鞋修伞摊最值钱的是信任，不是工具箱大小",
-    body:
-      "我把常见价格写清楚，不能修的当场说原因。小修免费检查一次，很多回头客就是从这一步来的。",
-    tags: ["信任", "明码标价", "回头客"],
-    saves: 28,
-    heat: 75,
-    createdAt: "2026-05-18T09:00:00"
+    city: "广州",
+    type: "移动咖啡摊主",
+    category: "咖啡",
+    profit: 529,
+    units: 78,
+    summary: "写字楼下午后 15:00 比早高峰更稳，大家愿意为第二杯咖啡付更高客单价。",
+    tags: ["咖啡", "写字楼", "时段"],
+    likes: 143,
+    comments: 20
   },
   {
     id: "seed-5",
-    category: "二手",
-    author: "小唐",
-    location: "成都玉林",
-    title: "二手摊标签别写太满，留一句故事更好聊",
-    body:
-      "衣服只写尺码、成色、价格和一句来源。客人愿意问，摊主也更容易判断对方是不是目标买家。",
-    tags: ["标签", "选品", "聊天"],
-    saves: 24,
-    heat: 68,
-    createdAt: "2026-05-21T16:40:00"
+    city: "武汉",
+    type: "饰品摊主",
+    category: "饰品",
+    profit: 298,
+    units: 67,
+    summary: "灯光比位置更重要。加了冷白补光后，银饰质感明显，停留时间变长。",
+    tags: ["饰品", "夜市", "灯光"],
+    likes: 82,
+    comments: 11
   },
   {
     id: "seed-6",
-    category: "饮品",
-    author: "阿青",
-    location: "厦门沙坡尾",
-    title: "移动咖啡摊的第一杯不要快，要稳",
-    body:
-      "第一杯常常决定围观的人敢不敢买。我宁愿慢十秒，也会把香气、杯套和出杯动作做好，让后面的人看见稳定感。",
-    tags: ["出杯", "围观", "品质"],
-    saves: 47,
-    heat: 91,
-    createdAt: "2026-05-25T08:15:00"
+    city: "厦门",
+    type: "旧物摊主",
+    category: "市集",
+    profit: 421,
+    units: 35,
+    summary: "别只写价格，给每件货留一句来源故事。愿意听故事的人，才是最像买家的人。",
+    tags: ["市集", "二手", "标签"],
+    likes: 101,
+    comments: 16
   }
 ];
 
-const storageKey = "stallAllianceStories";
-const savedKey = "stallAllianceSavedIds";
+const categories = [
+  { name: "柠檬茶", count: 128, note: "高频问题：冰块、糖浆、出杯速度" },
+  { name: "咖啡", count: 96, note: "高频问题：点位、设备、电源" },
+  { name: "烤肠", count: 84, note: "高频问题：学校、排队、套餐" },
+  { name: "文创", count: 77, note: "高频问题：陈列、定价、送礼场景" },
+  { name: "饰品", count: 69, note: "高频问题：灯光、盗损、试戴" },
+  { name: "夜市", count: 142, note: "高频问题：竞争、合规、收摊" },
+  { name: "校园", count: 58, note: "高频问题：时段、低客单、爆品" },
+  { name: "市集", count: 73, note: "高频问题：摊位费、选品、复购" }
+];
 
-const storyGrid = document.querySelector("#storyGrid");
-const resultCount = document.querySelector("#resultCount");
-const searchInput = document.querySelector("#searchInput");
-const sortSelect = document.querySelector("#sortSelect");
-const chips = [...document.querySelectorAll(".chip")];
-const postForm = document.querySelector("#postForm");
+const mapSpots = [
+  {
+    name: "杭州湖滨银泰侧街",
+    city: "杭州",
+    traffic: "高",
+    policy: "中",
+    time: "18:30-22:00",
+    index: 86,
+    note: "饮品和小吃转化高，竞争也密，适合用强视觉单品试摊。"
+  },
+  {
+    name: "成都玉林社区口",
+    city: "成都",
+    traffic: "中高",
+    policy: "低",
+    time: "16:30-20:30",
+    index: 79,
+    note: "社区复购强，适合鲜花、二手、手作和轻食，靠口碑慢慢积累。"
+  },
+  {
+    name: "上海大学路周末市集",
+    city: "上海",
+    traffic: "高",
+    policy: "低",
+    time: "周末 13:00-21:00",
+    index: 83,
+    note: "文创和饰品表现好，但摊位费偏高，要算清楚客单价。"
+  },
+  {
+    name: "广州珠江新城写字楼下",
+    city: "广州",
+    traffic: "中",
+    policy: "中",
+    time: "08:00-10:00 / 14:30-17:00",
+    index: 74,
+    note: "咖啡和轻食适配，早高峰快，午后复购更稳定。"
+  },
+  {
+    name: "武汉江汉路支路",
+    city: "武汉",
+    traffic: "高",
+    policy: "高",
+    time: "19:00-23:00",
+    index: 61,
+    note: "人流强但管理严格，建议只做低库存快闪，不适合重设备。"
+  },
+  {
+    name: "厦门沙坡尾入口",
+    city: "厦门",
+    traffic: "中高",
+    policy: "中",
+    time: "15:00-21:30",
+    index: 78,
+    note: "游客多，适合有拍照属性的饮品、花束和纪念品。"
+  }
+];
+
+const logs = [
+  {
+    title: "杭州｜柠檬茶",
+    weather: "晴，31℃",
+    units: 126,
+    profit: 487,
+    problem: "冰块断货，晚高峰损失 20 分钟。",
+    lesson: "温度超过 30℃，冰块按预计销量 1.3 倍准备。"
+  },
+  {
+    title: "成都｜烤肠",
+    weather: "阴，24℃",
+    units: 214,
+    profit: 356,
+    problem: "低价款卖太快，高毛利款介绍不够。",
+    lesson: "招牌上把芝士款放第一位，低价款只负责引流。"
+  },
+  {
+    title: "上海｜文创",
+    weather: "小雨，22℃",
+    units: 43,
+    profit: 612,
+    problem: "雨天停留短，客人不愿慢慢挑。",
+    lesson: "把礼物套装前置，减少选择时间。"
+  }
+];
+
+const feedGrid = document.querySelector("#feedGrid");
+const feedSearch = document.querySelector("#feedSearch");
+const feedFilter = document.querySelector("#feedFilter");
+const categoryGrid = document.querySelector("#categoryGrid");
+const profitForm = document.querySelector("#profitForm");
+const mapGrid = document.querySelector("#mapGrid");
+const logList = document.querySelector("#logList");
+const publishForm = document.querySelector("#publishForm");
+const postImage = document.querySelector("#postImage");
+const imagePreview = document.querySelector("#imagePreview");
 const toast = document.querySelector("#toast");
-const storyDialog = document.querySelector("#storyDialog");
-const dialogContent = document.querySelector("#dialogContent");
-const closeDialog = document.querySelector("#closeDialog");
-const costForm = document.querySelector("#costForm");
-const locationForm = document.querySelector("#locationForm");
 
-let currentCategory = "全部";
-let stories = loadStories();
-let savedIds = new Set(JSON.parse(localStorage.getItem(savedKey) || "[]"));
+let feed = loadFeed();
 
-function loadStories() {
-  const stored = JSON.parse(localStorage.getItem(storageKey) || "[]");
-  return [...stored, ...seedStories];
+function loadFeed() {
+  const saved = JSON.parse(localStorage.getItem(feedStorageKey) || "[]");
+  return [...saved, ...baseFeed];
 }
 
-function persistCustomStories() {
-  const customStories = stories.filter((story) => !story.id.startsWith("seed-"));
-  localStorage.setItem(storageKey, JSON.stringify(customStories));
+function saveCustomFeed() {
+  const custom = feed.filter((item) => item.id.startsWith("custom-"));
+  localStorage.setItem(feedStorageKey, JSON.stringify(custom));
 }
 
-function renderStories() {
-  const query = searchInput.value.trim().toLowerCase();
-  const sortMode = sortSelect.value;
-
-  let visible = stories.filter((story) => {
-    const categoryMatch = currentCategory === "全部" || story.category === currentCategory;
-    const haystack = `${story.title} ${story.body} ${story.author} ${story.location} ${story.tags.join(" ")}`.toLowerCase();
-    return categoryMatch && haystack.includes(query);
+function renderFeed() {
+  const query = feedSearch.value.trim().toLowerCase();
+  const filter = feedFilter.value;
+  const visible = feed.filter((item) => {
+    const matchesFilter = filter === "全部" || item.category === filter || item.tags.includes(filter);
+    const text = `${item.city} ${item.type} ${item.category} ${item.summary} ${item.tags.join(" ")}`.toLowerCase();
+    return matchesFilter && text.includes(query);
   });
 
-  visible = visible.sort((a, b) => {
-    if (sortMode === "new") return new Date(b.createdAt) - new Date(a.createdAt);
-    if (sortMode === "saves") return b.saves - a.saves;
-    return b.heat - a.heat;
-  });
-
-  storyGrid.innerHTML = visible.map(createStoryCard).join("");
-  resultCount.textContent = `${visible.length} 条匹配经验`;
-  updateLedger(visible);
+  feedGrid.innerHTML = visible.map(createFeedCard).join("");
+  document.querySelector("#todayPosts").textContent = Math.max(24, visible.length + 18);
+  document.querySelector("#topCity").textContent = findTopValue(visible, "city") || "杭州";
+  document.querySelector("#topCategory").textContent = findTopValue(visible, "category") || "柠檬茶";
 }
 
-function createStoryCard(story) {
-  const isSaved = savedIds.has(story.id);
+function createFeedCard(item) {
   return `
-    <article class="story-card">
+    <article class="feed-card">
       <div>
-        <span class="category-pill">${story.category}</span>
-        <h3>${escapeHtml(story.title)}</h3>
-        <p>${escapeHtml(story.body)}</p>
+        <div class="feed-meta">
+          <span>${escapeHtml(item.city)}｜${escapeHtml(item.type)}</span>
+          <span>${escapeHtml(item.category)}</span>
+        </div>
+        <div class="profit-row">
+          <span>今日利润 +${formatMoney(item.profit)}</span>
+          <span>销量 ${item.units} 单</span>
+        </div>
+        <h3>${escapeHtml(item.summary.split("。")[0])}</h3>
+        <p>${escapeHtml(item.summary)}</p>
       </div>
       <div>
-        <div class="tagline">
-          ${story.tags.map((tag) => `<span>#${escapeHtml(tag)}</span>`).join("")}
-        </div>
-        <div class="card-footer">
-          <div class="meta">${escapeHtml(story.author)} · ${escapeHtml(story.location)}<br>${formatDate(story.createdAt)}</div>
-          <div class="card-actions">
-            <button class="small-button" type="button" data-action="open" data-id="${story.id}" aria-label="查看详情">↗</button>
-            <button class="small-button" type="button" data-action="save" data-id="${story.id}" aria-label="收藏">${isSaved ? "★" : "☆"}</button>
-          </div>
+        <div class="tags">${item.tags.map((tag) => `<span>#${escapeHtml(tag)}</span>`).join("")}</div>
+        <div class="feed-actions">
+          <span>${item.likes} 赞</span>
+          <span>${item.comments} 评论</span>
         </div>
       </div>
     </article>
   `;
 }
 
-function updateLedger(visibleStories) {
-  document.querySelector("#totalPosts").textContent = stories.length;
-  document.querySelector("#totalSaves").textContent = stories.reduce((sum, story) => sum + story.saves, 0);
-  document.querySelector("#activeCategory").textContent = currentCategory;
-
-  const tagCounts = visibleStories.flatMap((story) => story.tags).reduce((acc, tag) => {
-    acc[tag] = (acc[tag] || 0) + 1;
-    return acc;
-  }, {});
-  const topTag = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "备货";
-  document.querySelector("#topicOfDay").textContent = topTag;
+function renderCategories() {
+  categoryGrid.innerHTML = categories
+    .map(
+      (item) => `
+        <button class="category-card" type="button" data-category="${item.name}">
+          <strong>${item.name}</strong>
+          <p>${item.count} 条经验 · ${item.note}</p>
+        </button>
+      `
+    )
+    .join("");
 }
 
-function showStory(id) {
-  const story = stories.find((item) => item.id === id);
-  if (!story) return;
-
-  dialogContent.innerHTML = `
-    <div class="dialog-body">
-      <span class="category-pill">${story.category}</span>
-      <h3>${escapeHtml(story.title)}</h3>
-      <p>${escapeHtml(story.body)}</p>
-      <div class="tagline">${story.tags.map((tag) => `<span>#${escapeHtml(tag)}</span>`).join("")}</div>
-      <p class="meta">${escapeHtml(story.author)} · ${escapeHtml(story.location)} · ${formatDate(story.createdAt)}</p>
-    </div>
-  `;
-  storyDialog.showModal();
+function renderMap() {
+  mapGrid.innerHTML = mapSpots
+    .map(
+      (spot) => `
+        <article class="map-card">
+          <div class="map-card-head">
+            <div>
+              <h3>${spot.name}</h3>
+              <p>${spot.city} · 推荐时段 ${spot.time}</p>
+            </div>
+            <span class="index-pill">${spot.index}</span>
+          </div>
+          <div class="map-facts">
+            <span><strong>人流</strong>${spot.traffic}</span>
+            <span><strong>管理</strong>${spot.policy}</span>
+          </div>
+          <p>${spot.note}</p>
+        </article>
+      `
+    )
+    .join("");
 }
 
-function toggleSave(id) {
-  const story = stories.find((item) => item.id === id);
-  if (!story) return;
+function renderLogs() {
+  logList.innerHTML = logs
+    .map(
+      (log) => `
+        <article class="log-card">
+          <h3>${log.title}</h3>
+          <div class="log-stats">
+            <span><strong>${log.weather}</strong>天气</span>
+            <span><strong>${log.units} 单</strong>销量</span>
+            <span><strong>${formatMoney(log.profit)}</strong>利润</span>
+          </div>
+          <p><strong>今日问题：</strong>${log.problem}</p>
+          <p><strong>今日心得：</strong>${log.lesson}</p>
+        </article>
+      `
+    )
+    .join("");
+}
 
-  if (savedIds.has(id)) {
-    savedIds.delete(id);
-    story.saves = Math.max(0, story.saves - 1);
-    showToast("已取消收藏");
-  } else {
-    savedIds.add(id);
-    story.saves += 1;
-    showToast("已收藏这条经验");
+function calculateProfit() {
+  const price = readNumber("priceInput");
+  const raw = readNumber("rawCostInput");
+  const ice = readNumber("iceCostInput");
+  const cup = readNumber("cupCostInput");
+  const rent = readNumber("rentInput");
+  const units = Math.max(1, readNumber("unitsInput", 1));
+  const investment = readNumber("investmentInput");
+
+  const revenue = price * units;
+  const variableCost = (raw + ice + cup) * units;
+  const dailyProfit = revenue - variableCost - rent;
+  const monthlyProfit = dailyProfit * 30;
+  const margin = revenue > 0 ? dailyProfit / revenue : 0;
+  const paybackDays = dailyProfit > 0 ? Math.ceil(investment / dailyProfit) : null;
+  const maxCost = Math.max(raw, ice, cup, rent / units, 1);
+
+  document.querySelector("#dailyProfitValue").textContent = formatMoney(dailyProfit);
+  document.querySelector("#monthlyProfitValue").textContent = formatMoney(monthlyProfit);
+  document.querySelector("#paybackValue").textContent = paybackDays ? `${paybackDays} 天` : "未回本";
+  document.querySelector("#marginValue").textContent = `${Math.round(margin * 100)}%`;
+
+  setBar("rawBar", raw, maxCost);
+  setBar("iceBar", ice, maxCost);
+  setBar("cupBar", cup, maxCost);
+  setBar("rentBar", rent / units, maxCost);
+
+  let advice = "利润结构健康。接下来重点记录每个时段的销量，找到真正赚钱的 2 小时。";
+  if (dailyProfit <= 0) {
+    advice = "当前模型亏损。优先提高售价、减少固定摊位费，或降低单杯成本。";
+  } else if (margin < 0.25) {
+    advice = "利润率偏低。建议设计加料、第二杯优惠或套餐，提高客单价。";
+  } else if (paybackDays && paybackDays > 30) {
+    advice = "能盈利，但回本偏慢。先用轻设备和低库存试摊，别急着扩大投入。";
   }
 
-  localStorage.setItem(savedKey, JSON.stringify([...savedIds]));
-  persistCustomStories();
-  renderStories();
+  document.querySelector("#profitAdvice").textContent = advice;
 }
 
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add("show");
-  window.clearTimeout(showToast.timer);
-  showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
-}
-
-function formatDate(value) {
-  return new Intl.DateTimeFormat("zh-CN", { month: "short", day: "numeric" }).format(new Date(value));
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function setBar(id, value, max) {
+  const width = Math.max(4, Math.round((value / max) * 100));
+  document.querySelector(`#${id}`).style.setProperty("--bar-width", `${width}%`);
 }
 
 function readNumber(id, fallback = 0) {
@@ -232,214 +343,107 @@ function formatMoney(value) {
   return new Intl.NumberFormat("zh-CN", {
     style: "currency",
     currency: "CNY",
-    maximumFractionDigits: value >= 100 ? 0 : 1
+    maximumFractionDigits: 0
   }).format(value);
 }
 
-function calculateCosts() {
-  const materialCost = readNumber("materialCost");
-  const packageCost = readNumber("packageCost");
-  const stallFee = readNumber("stallFee");
-  const transportCost = readNumber("transportCost");
-  const laborCost = readNumber("laborCost");
-  const otherCost = readNumber("otherCost");
-  const dailyUnits = Math.max(1, readNumber("dailyUnits", 1));
-  const salePrice = readNumber("salePrice");
-  const setupCost = readNumber("setupCost");
-  const targetMargin = Math.min(80, Math.max(1, readNumber("targetMargin", 35))) / 100;
+function findTopValue(items, key) {
+  const counts = items.reduce((acc, item) => {
+    acc[item[key]] = (acc[item[key]] || 0) + 1;
+    return acc;
+  }, {});
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
+}
 
-  const unitVariableCost = materialCost + packageCost;
-  const dailyFixedCost = stallFee + transportCost + laborCost + otherCost;
-  const dailyRevenue = dailyUnits * salePrice;
-  const dailyCost = dailyUnits * unitVariableCost + dailyFixedCost;
-  const dailyProfit = dailyRevenue - dailyCost;
-  const margin = dailyRevenue > 0 ? dailyProfit / dailyRevenue : 0;
-  const paybackDays = dailyProfit > 0 ? Math.ceil(setupCost / dailyProfit) : null;
-  const suggestedPrice = (unitVariableCost + dailyFixedCost / dailyUnits) / (1 - targetMargin);
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-  document.querySelector("#dailyRevenue").textContent = formatMoney(dailyRevenue);
-  document.querySelector("#dailyProfit").textContent = formatMoney(dailyProfit);
-  document.querySelector("#profitMargin").textContent = `${Math.round(margin * 100)}%`;
-  document.querySelector("#paybackDays").textContent = paybackDays ? `${paybackDays} 天` : "未回本";
-  document.querySelector("#suggestedPrice").textContent = formatMoney(suggestedPrice);
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  window.clearTimeout(showToast.timer);
+  showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+}
 
-  let advice = "当前模型按日销量摊薄固定成本，建议结合实际损耗和淡旺季再留 5%-10% 安全空间。";
-  if (dailyProfit <= 0) {
-    advice = "当前售价或销量无法覆盖每日成本。优先检查摊位费、人工安排和单份毛利，必要时缩小 SKU 或提高客单价。";
-  } else if (salePrice < suggestedPrice) {
-    advice = "当前平均售价低于目标利润率所需售价。可以通过套餐、加料、升级包装或提高核心单品价格来补齐利润。";
-  } else if (margin >= targetMargin) {
-    advice = "当前售价已经达到目标利润率。重点关注稳定销量、控制损耗和复购，而不是继续盲目降价。";
+function updateLiveNumbers() {
+  const base = 1284 + Math.floor(Math.random() * 40);
+  document.querySelector("#onlineVendors").textContent = base.toLocaleString("zh-CN");
+  document.querySelector("#cityIndex").textContent = 78 + Math.floor(Math.random() * 9);
+  document.querySelector("#liveClock").textContent = new Intl.DateTimeFormat("zh-CN", {
+    hour: "2-digit",
+    minute: "2-digit"
+  }).format(new Date());
+}
+
+feedSearch.addEventListener("input", renderFeed);
+feedFilter.addEventListener("change", renderFeed);
+profitForm.addEventListener("input", calculateProfit);
+
+categoryGrid.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-category]");
+  if (!button) return;
+  feedFilter.value = button.dataset.category;
+  renderFeed();
+  document.querySelector("#feed").scrollIntoView({ behavior: "smooth" });
+});
+
+postImage.addEventListener("change", () => {
+  const file = postImage.files?.[0];
+  if (!file) {
+    imagePreview.classList.remove("has-image");
+    imagePreview.innerHTML = "";
+    return;
   }
 
-  document.querySelector("#costAdvice").textContent = advice;
-}
-
-function calculateLocation() {
-  const traffic = readNumber("trafficScore", 3);
-  const match = readNumber("matchScore", 3);
-  const visibility = readNumber("visibilityScore", 3);
-  const dwell = readNumber("dwellScore", 3);
-  const competition = readNumber("competitionScore", 3);
-  const rent = readNumber("rentScore", 3);
-  const policy = readNumber("policyScore", 3);
-  const shelter = readNumber("shelterScore", 3);
-  const stallType = document.querySelector("#stallType").value;
-  const timeSlot = document.querySelector("#timeSlot").value;
-
-  const typeBonus = {
-    food: { evening: 7, lunch: 5, morning: 3, weekend: 4 },
-    craft: { weekend: 7, evening: 4, lunch: 1, morning: -2 },
-    flower: { evening: 5, weekend: 5, morning: 2, lunch: 1 },
-    repair: { morning: 5, lunch: 4, weekend: 2, evening: 0 },
-    secondhand: { weekend: 8, evening: 3, lunch: 0, morning: -2 }
-  };
-
-  const normalized =
-    traffic * 4.6 +
-    match * 4.1 +
-    visibility * 2.8 +
-    dwell * 2.6 +
-    shelter * 1.4 +
-    (6 - competition) * 2.1 +
-    (6 - rent) * 1.8 +
-    (6 - policy) * 1.6;
-
-  const index = Math.max(0, Math.min(100, Math.round(normalized + (typeBonus[stallType]?.[timeSlot] || 0))));
-  const level = index >= 82 ? "强烈推荐" : index >= 68 ? "值得试摊" : index >= 52 ? "谨慎观察" : "暂不推荐";
-
-  const risks = [];
-  if (competition >= 4) risks.push("竞争密度偏高");
-  if (rent >= 4) risks.push("固定成本偏高");
-  if (policy >= 4) risks.push("合规风险偏高");
-  if (traffic <= 2) risks.push("自然人流不足");
-  if (match <= 2) risks.push("客群匹配偏弱");
-
-  const advice =
-    risks.length > 0
-      ? `${level}。主要风险是${risks.join("、")}，建议先用 2-3 次低库存试摊验证转化率。`
-      : `${level}。这个点位的基础条件较均衡，建议记录每小时成交数和客单价，连续三次复盘后再决定长期占位。`;
-
-  document.querySelector("#locationIndex").textContent = index;
-  document.querySelector("#locationLevel").textContent = level;
-  document.querySelector("#locationAdvice").textContent = advice;
-  document.querySelector(".score-ring").style.setProperty("--score-angle", `${index * 3.6}deg`);
-
-  updateSliderLabels();
-  renderHeatMap(index, { traffic, match, dwell, competition, rent, policy, shelter });
-}
-
-function updateSliderLabels() {
-  const labels = [
-    ["trafficScore", "trafficValue"],
-    ["matchScore", "matchValue"],
-    ["visibilityScore", "visibilityValue"],
-    ["dwellScore", "dwellValue"],
-    ["competitionScore", "competitionValue"],
-    ["rentScore", "rentValue"],
-    ["policyScore", "policyValue"],
-    ["shelterScore", "shelterValue"]
-  ];
-
-  labels.forEach(([inputId, outputId]) => {
-    document.querySelector(`#${outputId}`).textContent = document.querySelector(`#${inputId}`).value;
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    imagePreview.innerHTML = `<img src="${reader.result}" alt="上传图片预览" />`;
+    imagePreview.classList.add("has-image");
   });
-}
-
-function renderHeatMap(baseIndex, factors) {
-  const cells = [
-    ["入口外侧", 7 + factors.visibility],
-    ["主通道中段", 5 + factors.traffic],
-    ["转角位", 3 + factors.visibility + factors.dwell],
-    ["排队旁", 6 + factors.dwell],
-    ["地铁口", 4 + factors.traffic - factors.policy],
-    ["学校边", 2 + factors.match - factors.policy],
-    ["写字楼下", 3 + factors.match - factors.rent],
-    ["社区门口", 2 + factors.dwell],
-    ["夜市核心", 6 + factors.traffic - factors.competition],
-    ["停车边", -1 + factors.shelter],
-    ["竞品旁", -3 - factors.competition + factors.traffic],
-    ["背街位", -8 + factors.rent]
-  ];
-
-  document.querySelector("#heatMap").innerHTML = cells
-    .map(([label, delta]) => {
-      const score = Math.max(18, Math.min(98, Math.round(baseIndex + delta)));
-      const hue = Math.round(8 + score * 1.15);
-      const color = `hsl(${hue}, 58%, ${score > 72 ? 34 : 42}%)`;
-      return `
-        <div class="heat-cell" style="background:${color}">
-          <strong>${label}</strong>
-          <span>${score}</span>
-        </div>
-      `;
-    })
-    .join("");
-}
-
-chips.forEach((chip) => {
-  chip.addEventListener("click", () => {
-    currentCategory = chip.dataset.category;
-    chips.forEach((item) => item.classList.toggle("active", item === chip));
-    renderStories();
-  });
+  reader.readAsDataURL(file);
 });
 
-storyGrid.addEventListener("click", (event) => {
-  const button = event.target.closest("button[data-action]");
-  if (!button) return;
-
-  if (button.dataset.action === "open") showStory(button.dataset.id);
-  if (button.dataset.action === "save") toggleSave(button.dataset.id);
-});
-
-document.querySelectorAll(".prompt-button").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelector("#titleInput").value = button.dataset.prompt;
-    document.querySelector("#bodyInput").focus();
-  });
-});
-
-postForm.addEventListener("submit", (event) => {
+publishForm.addEventListener("submit", (event) => {
   event.preventDefault();
-
   const tags = document
-    .querySelector("#tagsInput")
+    .querySelector("#postTags")
     .value.split(/[,，]/)
     .map((tag) => tag.trim())
     .filter(Boolean);
 
-  const story = {
+  const item = {
     id: `custom-${Date.now()}`,
-    category: document.querySelector("#categoryInput").value,
-    author: document.querySelector("#authorInput").value.trim(),
-    location: document.querySelector("#locationInput").value.trim(),
-    title: document.querySelector("#titleInput").value.trim(),
-    body: document.querySelector("#bodyInput").value.trim(),
-    tags: tags.length ? tags : ["心得"],
-    saves: 0,
-    heat: 60,
-    createdAt: new Date().toISOString()
+    city: document.querySelector("#postCity").value.trim(),
+    type: document.querySelector("#postType").value.trim(),
+    category: tags[0] || "经验",
+    profit: readNumber("postProfit"),
+    units: Math.max(1, readNumber("postUnits", 1)),
+    summary: document.querySelector("#postSummary").value.trim(),
+    tags: tags.length ? tags : ["经验"],
+    likes: 0,
+    comments: 0
   };
 
-  stories = [story, ...stories];
-  persistCustomStories();
-  postForm.reset();
-  currentCategory = "全部";
-  chips.forEach((item) => item.classList.toggle("active", item.dataset.category === "全部"));
-  sortSelect.value = "new";
-  renderStories();
-  showToast("已发布到摊主联盟");
-  document.querySelector("#stories").scrollIntoView({ behavior: "smooth", block: "start" });
+  feed = [item, ...feed];
+  saveCustomFeed();
+  renderFeed();
+  publishForm.reset();
+  imagePreview.classList.remove("has-image");
+  imagePreview.innerHTML = "";
+  showToast("已发布到经验流，本地保存成功");
+  document.querySelector("#feed").scrollIntoView({ behavior: "smooth" });
 });
 
-searchInput.addEventListener("input", renderStories);
-sortSelect.addEventListener("change", renderStories);
-closeDialog.addEventListener("click", () => storyDialog.close());
-costForm.addEventListener("input", calculateCosts);
-locationForm.addEventListener("input", calculateLocation);
-locationForm.addEventListener("change", calculateLocation);
-
-renderStories();
-calculateCosts();
-calculateLocation();
+renderCategories();
+renderFeed();
+renderMap();
+renderLogs();
+calculateProfit();
+updateLiveNumbers();
+window.setInterval(updateLiveNumbers, 15000);
